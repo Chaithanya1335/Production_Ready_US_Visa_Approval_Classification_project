@@ -31,9 +31,12 @@ class USvisaData:
             if database_name is None:
                 collection = self.mongo_client.database[collection_name]
             else:
-                collection = self.mongo_client[database_name][collection_name]
+                database = self.mongo_client[database_name]
+                collection = database[collection_name]
+                print(collection)
 
             df = pd.DataFrame(list(collection.find()))
+            print(df.head())
             if "_id" in df.columns.to_list():
                 df = df.drop(columns=["_id"], axis=1)
             df.replace({"na":np.nan},inplace=True)
